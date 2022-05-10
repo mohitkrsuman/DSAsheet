@@ -1,0 +1,75 @@
+/*
+Given two strings, string1 and string2, the task is to find the smallest substring in string1 containing all characters of string2 efficiently. 
+
+Examples: 
+
+Input: string = “this is a test string”, pattern = “tist” 
+Output: Minimum window is “t stri” 
+Explanation: “t stri” contains all the characters of pattern.
+
+Input: string = “geeksforgeeks”, pattern = “ork” 
+Output: Minimum window is “ksfor”
+*/
+
+string findSubString(string str, string pat)
+{
+    int len1 = str.length();
+    int len2 = pat.length();
+ 
+    // Check if string's length
+    // is less than pattern's
+    // length. If yes then no such
+    // window can exist
+    if (len1 < len2) {
+        cout << "No such window exists";
+        return "";
+    }
+ 
+    int hash_pat[no_of_chars] = { 0 };
+    int hash_str[no_of_chars] = { 0 };
+ 
+    // Store occurrence ofs characters
+    // of pattern
+    for (int i = 0; i < len2; i++)
+        hash_pat[pat[i]]++;
+ 
+    int start = 0, start_index = -1, min_len = INT_MAX;
+ 
+    // Start traversing the string
+    // Count of characters
+    int count = 0;
+    for (int j = 0; j < len1; j++) {
+       
+        // Count occurrence of characters
+        // of string
+        hash_str[str[j]]++;
+ 
+        // If string's char matches with
+        // pattern's char
+        // then increment count
+        if (hash_str[str[j]] <= hash_pat[str[j]])
+            count++;
+ 
+        // if all the characters are matched
+        if (count == len2) {
+           
+            // Try to minimize the window
+            while (hash_str[str[start]]
+                       > hash_pat[str[start]]
+                   || hash_pat[str[start]] == 0) {
+ 
+                if (hash_str[str[start]]
+                    > hash_pat[str[start]])
+                    hash_str[str[start]]--;
+                start++;
+            }
+ 
+            // update window size
+            int len_window = j - start + 1;
+            if (min_len > len_window) {
+                min_len = len_window;
+                start_index = start;
+            }
+        }
+    }
+ 
